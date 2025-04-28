@@ -51,5 +51,13 @@ namespace apiToDo.Models
             if (tarefaId==0)
                 throw new ErrorResponse(StatusCodes.Status404NotFound,"ID não encontrado");
         }
+
+        public TarefaDTO BuscarTarefaId(int idTarefa)
+        {
+            var tarefa= _lstTarefas.FirstOrDefault(x => x.ID_TAREFA == idTarefa);
+            if (tarefa == null)
+                throw new ErrorResponse(StatusCodes.Status404NotFound, "Tarefa não encontrada");
+            return tarefa;
+        }
     }
 }

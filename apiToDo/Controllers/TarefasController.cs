@@ -32,6 +32,16 @@ namespace apiToDo.Controllers
             return Ok(tarefas);
         }
 
+        //buscar tarefas por id
+        [HttpGet("tarefas/{idTarefa}")]
+        public ActionResult<TarefaDTO> BuscarTarefaPorId(int idTarefa)
+        {
+            //chama a funcao buscarTarefaID do obj Tarefas
+            var tarefa = tarefasService.BuscarTarefaId(idTarefa);
+            //retorna a lista de tarefas
+            return Ok(tarefa);
+        }
+
         [HttpPost("InserirTarefas")]
         public ActionResult<List<TarefaDTO>>InserirTarefas([FromBody] CriarTarefaDTO description)
         {
