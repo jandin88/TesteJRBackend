@@ -1,8 +1,8 @@
 ﻿using apiToDo.DTO;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+using apiToDo.Exception;
+using Microsoft.AspNetCore.Http;
 
 namespace apiToDo.Models
 {
@@ -16,35 +16,44 @@ namespace apiToDo.Models
         };
 
         public List<TarefaDTO> findTarefas() {
+
+            //verificando se a lista e nula
+            if (_lstTarefas.Count == 0) {
+                throw new ErrorResponse(StatusCodes.Status400BadRequest,"Lista de tarefas vazia");
+            }
+            //retornando a lista
             return _lstTarefas;
         }
 
 
         public string InserirTarefa(CriarTarefaDTO tarefa)
         {
-            if (tarefa == null)
-            {
-                throw new ArgumentException("Adicione uma descrição válida para a tarefa");
-            }
+            //validando
+            if (string.IsNullOrWhiteSpace(tarefa.Descricao))
+                throw new ErrorResponse(StatusCodes.Status400BadRequest,"Adicione uma descrição válida para a tarefa");
 
-            int ID_TAREFA = _lstTarefas.Count + 1;
-            _lstTarefas.Add(new(ID_TAREFA, tarefa.descricao));
+            var tarefaDuplicada=_lstTarefas.Any(x=>x.DS_TAREFA==tarefa.Descricao);
+            if(tarefaDuplicada)
+                throw new ErrorResponse(StatusCodes.Status400BadRequest,"tarefa já adicionada");
 
-            return ID_TAREFA.ToString();
+            //criando o id incremental
+            var idIncremental = _lstTarefas.Any() ? _lstTarefas.Last().ID_TAREFA + 1 : 1;
+
+            //adicionando na lista
+            _lstTarefas.Add(new(idIncremental, tarefa.Descricao));
+
+            //retornando o id
+            return idIncremental.ToString();
 
         }
         public void DeletarTarefa(int ID_TAREFA)
         {
-            try
-            {
-                var tarefaId= _lstTarefas.RemoveAll(x => x.ID_TAREFA == ID_TAREFA);
-                if (tarefaId==0)
-                    throw new ArgumentException("ID não encontrado");
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
+            //validando se o id existe
+            var tarefaId= _lstTarefas.RemoveAll(x => x.ID_TAREFA == ID_TAREFA);
+            // se não existir retornar erro
+            if (tarefaId==0)
+                throw new ErrorResponse(StatusCodes.Status404NotFound,"ID não encontrado");
+            //retornando o id
         }
     }
 }

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using apiToDo.Exception;
 using apiToDo.Models;
 
 namespace apiToDo
@@ -52,6 +53,7 @@ namespace apiToDo
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
