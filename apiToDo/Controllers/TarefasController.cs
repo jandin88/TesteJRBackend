@@ -41,7 +41,7 @@ namespace apiToDo.Controllers
         [HttpDelete("DeletarTarefa")]
         public ActionResult DeletarTarefa([FromQuery] int ID_TAREFA)
         {
-            tarefasService.DeletarTarefa(ID_TAREFA);
+           tarefasService.DeletarTarefa(ID_TAREFA);
             return StatusCode(200, new { Id = ID_TAREFA, menssage = "Deletada com sucesso" });
         }
 

@@ -3,9 +3,9 @@
 namespace apiToDo.DTO
 {
 
-    //criei essa classe para receber o parametro de descrição da tarefa para fazer um id incremental.
+    //criei essa classe para receber o parametro de descrição da tarefa para o usuario não precisar digitar.
     public class CriarTarefaDTO
     {
-        public String descricao { get; set; }
+        public String Descricao { get; set; }
     }
 }
