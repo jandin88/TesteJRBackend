@@ -8,7 +8,7 @@ namespace apiToDo.Models
     public class Tarefas
     {
         public List<TarefaDTO> lstTarefas()
-        {
+        { 
             try
             {
                 List<TarefaDTO> lstTarefas = new List<TarefaDTO>();
