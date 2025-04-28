@@ -2,64 +2,46 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 namespace apiToDo.Models
 {
-    public class Tarefas
-    {
-        public List<TarefaDTO> lstTarefas()
-        { 
-            try
-            {
-                List<TarefaDTO> lstTarefas = new List<TarefaDTO>();
+    public class Tarefas {
 
-                lstTarefas.Add(new TarefaDTO
-                {
-                    ID_TAREFA = 1,
-                    DS_TAREFA = "Fazer Compras"
-                });
+        private static List<TarefaDTO> _lstTarefas = new List<TarefaDTO>
+        {
+            new() { ID_TAREFA = 1, DS_TAREFA = "Fazer Compras" },
+            new() { ID_TAREFA = 2, DS_TAREFA = "Fazer Atividade da Faculdade" },
+            new() { ID_TAREFA = 3, DS_TAREFA = "Subir Projeto de Teste no GitHub" }
+        };
 
-                lstTarefas.Add(new TarefaDTO
-                {
-                    ID_TAREFA = 2,
-                    DS_TAREFA = "Fazer Atividad Faculdade"
-                });
-
-                lstTarefas.Add(new TarefaDTO
-                {
-                    ID_TAREFA = 3,
-                    DS_TAREFA = "Subir Projeto de Teste no GitHub"
-                });
-
-                return new List<TarefaDTO>();
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
+        public List<TarefaDTO> findTarefas()
+        {
+            return _lstTarefas;
         }
 
 
-        public void InserirTarefa(TarefaDTO Request)
+        public String InserirTarefa(CriarTarefaDTO tarefa)
         {
-            try
+            if (tarefa == null)
             {
-                List<TarefaDTO> lstResponse = lstTarefas();
-                lstResponse.Add(Request);
+                throw new ArgumentException("Adicione uma descrição válida para a tarefa");
             }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
+
+            int ID_TAREFA = _lstTarefas.Count + 1;
+            _lstTarefas.Add(new(ID_TAREFA, tarefa.descricao));
+
+            return ID_TAREFA.ToString();
+
         }
         public void DeletarTarefa(int ID_TAREFA)
         {
             try
             {
-                List<TarefaDTO> lstResponse = lstTarefas();
-                var Tarefa = lstResponse.FirstOrDefault(x => x.ID_TAREFA == ID_TAREFA);
-                TarefaDTO Tarefa2 = lstResponse.Where(x=> x.ID_TAREFA == Tarefa.ID_TAREFA).FirstOrDefault();
-                lstResponse.Remove(Tarefa2);
+                // List<TarefaDTO> lstResponse = lstTarefas();
+                // var Tarefa = lstResponse.FirstOrDefault(x => x.ID_TAREFA == ID_TAREFA);
+                // TarefaDTO Tarefa2 = lstResponse.Where(x=> x.ID_TAREFA == Tarefa.ID_TAREFA).FirstOrDefault();
+                // lstResponse.Remove(Tarefa2);
             }
             catch(Exception ex)
             {

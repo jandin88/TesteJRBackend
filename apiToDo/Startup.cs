@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using apiToDo.Models;
 
 namespace apiToDo
 {
@@ -28,6 +29,8 @@ namespace apiToDo
         {
 
             services.AddControllers();
+            services.AddScoped<Tarefas>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "apiToDo", Version = "v1" });
