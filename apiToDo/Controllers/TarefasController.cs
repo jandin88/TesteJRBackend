@@ -22,7 +22,6 @@ namespace apiToDo.Controllers
             this.tarefasService = tarefasService;
         }
 
-        //[Authorize]
         [HttpGet("lstTarefas")]
         public ActionResult<List<TarefaDTO>>lstTarefas()
         {
@@ -33,30 +32,56 @@ namespace apiToDo.Controllers
         }
 
         //buscar tarefas por id
-        [HttpGet("tarefas/{idTarefa}")]
-        public ActionResult<TarefaDTO> BuscarTarefaPorId(int idTarefa)
+        [HttpGet("tarefas/{ID}")]
+        public ActionResult<TarefaDTO> BuscarTarefaPorId(int ID)
         {
             //chama a funcao buscarTarefaID do obj Tarefas
-            var tarefa = tarefasService.BuscarTarefaId(idTarefa);
+            var tarefa = tarefasService.BuscarTarefaId(ID);
             //retorna a lista de tarefas
             return Ok(tarefa);
         }
 
-        [HttpPost("InserirTarefas")]
-        public ActionResult<List<TarefaDTO>>InserirTarefas([FromBody] CriarTarefaDTO description)
+
+        [HttpGet("tarefas/ds/{DS}")]
+        public ActionResult<TarefaDTO> BuscarTarefaPelaDS(String DS)
+        {
+            //chama a funcao buscarTarefaID do obj Tarefas
+            var tarefa = tarefasService.BuscarTarefaDS(DS);
+            //retorna a lista de tarefas
+            return Ok(tarefa);
+        }
+
+
+        [HttpPost("tarefas")]
+        public ActionResult<List<TarefaDTO>>InserirTarefas([FromBody] DSTarefaDTO dsTarefa)
         {
             //chama a funcao InserirTarefa do obj Tarefas
-            tarefasService.InserirTarefa(description);
+            tarefasService.InserirTarefa(dsTarefa);
             //retorna a lista de tarefas
             var lisTarefas = tarefasService.findTarefas();
             return Ok(lisTarefas);
         }
 
-        [HttpDelete("DeletarTarefa")]
-        public ActionResult DeletarTarefa([FromQuery] int ID_TAREFA)
+
+        [HttpPut("tarefas/{id}")]
+        public ActionResult<TarefaDTO> atualizarTarefa(int id, [FromBody] DSTarefaDTO dsTarefa)
+        {
+            var tarefaAtualizada = tarefasService.AtualizarTarefa(id, dsTarefa);
+            return Ok(tarefaAtualizada);
+        }
+
+        [HttpPut("tarefas/DS/{DS}")]
+        public ActionResult<TarefaDTO> atualizarTarefaDS(String DS, [FromBody] DSTarefaDTO dsTarefa)
+        {
+            var tarefaAtualizada = tarefasService.AtualizarTarefaDS(DS, dsTarefa);
+            return Ok(tarefaAtualizada);
+        }
+
+        [HttpDelete("tarefas")]
+        public ActionResult DeletarTarefa([FromQuery] int ID)
         {
             //chama a funcao DeletarTarefa do obj Tarefas
-            tarefasService.DeletarTarefa(ID_TAREFA);
+            tarefasService.DeletarTarefa(ID);
             //retorna a lista de tarefas
             var lisTarefas = tarefasService.findTarefas();
             return Ok(lisTarefas);        }

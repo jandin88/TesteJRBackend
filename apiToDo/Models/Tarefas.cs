@@ -26,7 +26,7 @@ namespace apiToDo.Models
         }
 
 
-        public void InserirTarefa(CriarTarefaDTO tarefa)
+        public void InserirTarefa(DSTarefaDTO tarefa)
         {
             //validando
             if (string.IsNullOrWhiteSpace(tarefa.Descricao))
@@ -58,6 +58,30 @@ namespace apiToDo.Models
             if (tarefa == null)
                 throw new ErrorResponse(StatusCodes.Status404NotFound, "Tarefa não encontrada");
             return tarefa;
+        }
+
+        public TarefaDTO AtualizarTarefa(int idTarefa, DSTarefaDTO description)
+        {
+            var tarefa = BuscarTarefaId(idTarefa);
+            tarefa.DS_TAREFA = description.Descricao;
+            return tarefa;
+        }
+
+        // metodo de buscar tarefa pela a DS, a DS ignorando o case
+        public TarefaDTO BuscarTarefaDS(string ds)
+        {
+            var tarefa = _lstTarefas.FirstOrDefault(x => x.DS_TAREFA.ToLower()== ds.ToLower());
+            if (tarefa==null)
+                throw new ErrorResponse(StatusCodes.Status404NotFound, "Tarefa Não encontrada");
+            return tarefa;
+        }
+
+        public TarefaDTO AtualizarTarefaDS(string ds, DSTarefaDTO dsTarefa)
+        {
+            var tarefa = BuscarTarefaDS(ds);
+            tarefa.DS_TAREFA = dsTarefa.Descricao;
+            return tarefa;
+
         }
     }
 }
