@@ -19,14 +19,14 @@ namespace apiToDo.Models
 
             //verificando se a lista e nula
             if (_lstTarefas.Count == 0) {
-                throw new ErrorResponse(StatusCodes.Status400BadRequest,"Lista de tarefas vazia");
+                throw new ErrorResponse(StatusCodes.Status404NotFound,"Lista de tarefas vazia");
             }
             //retornando a lista
             return _lstTarefas;
         }
 
 
-        public string InserirTarefa(CriarTarefaDTO tarefa)
+        public void InserirTarefa(CriarTarefaDTO tarefa)
         {
             //validando
             if (string.IsNullOrWhiteSpace(tarefa.Descricao))
@@ -42,9 +42,6 @@ namespace apiToDo.Models
             //adicionando na lista
             _lstTarefas.Add(new(idIncremental, tarefa.Descricao));
 
-            //retornando o id
-            return idIncremental.ToString();
-
         }
         public void DeletarTarefa(int ID_TAREFA)
         {
@@ -53,7 +50,6 @@ namespace apiToDo.Models
             // se não existir retornar erro
             if (tarefaId==0)
                 throw new ErrorResponse(StatusCodes.Status404NotFound,"ID não encontrado");
-            //retornando o id
         }
     }
 }

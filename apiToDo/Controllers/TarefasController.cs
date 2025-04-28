@@ -26,25 +26,30 @@ namespace apiToDo.Controllers
         [HttpGet("lstTarefas")]
         public ActionResult<List<TarefaDTO>>lstTarefas()
         {
+            //chama a funcao findTarefas do obj Tarefas
             var tarefas = tarefasService.findTarefas();
+            //retorna a lista de tarefas
             return Ok(tarefas);
         }
 
         [HttpPost("InserirTarefas")]
-        public ActionResult InserirTarefas([FromBody] CriarTarefaDTO description)
+        public ActionResult<List<TarefaDTO>>InserirTarefas([FromBody] CriarTarefaDTO description)
         {
-            String idTarefa = tarefasService.InserirTarefa(description);
-            return StatusCode(201, new { Id = idTarefa, menssage = "inserida com sucesso" });
-
+            //chama a funcao InserirTarefa do obj Tarefas
+            tarefasService.InserirTarefa(description);
+            //retorna a lista de tarefas
+            var lisTarefas = tarefasService.findTarefas();
+            return Ok(lisTarefas);
         }
 
         [HttpDelete("DeletarTarefa")]
         public ActionResult DeletarTarefa([FromQuery] int ID_TAREFA)
         {
-           tarefasService.DeletarTarefa(ID_TAREFA);
-            return StatusCode(200, new { Id = ID_TAREFA, menssage = "Deletada com sucesso" });
-        }
-
+            //chama a funcao DeletarTarefa do obj Tarefas
+            tarefasService.DeletarTarefa(ID_TAREFA);
+            //retorna a lista de tarefas
+            var lisTarefas = tarefasService.findTarefas();
+            return Ok(lisTarefas);        }
     }
 }
 
