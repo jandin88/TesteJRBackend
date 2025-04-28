@@ -8,20 +8,19 @@ namespace apiToDo.Models
 {
     public class Tarefas {
 
-        private static List<TarefaDTO> _lstTarefas = new List<TarefaDTO>
+        private static readonly List<TarefaDTO> _lstTarefas = new List<TarefaDTO>
         {
             new() { ID_TAREFA = 1, DS_TAREFA = "Fazer Compras" },
             new() { ID_TAREFA = 2, DS_TAREFA = "Fazer Atividade da Faculdade" },
             new() { ID_TAREFA = 3, DS_TAREFA = "Subir Projeto de Teste no GitHub" }
         };
 
-        public List<TarefaDTO> findTarefas()
-        {
+        public List<TarefaDTO> findTarefas() {
             return _lstTarefas;
         }
 
 
-        public String InserirTarefa(CriarTarefaDTO tarefa)
+        public string InserirTarefa(CriarTarefaDTO tarefa)
         {
             if (tarefa == null)
             {
@@ -38,10 +37,9 @@ namespace apiToDo.Models
         {
             try
             {
-                // List<TarefaDTO> lstResponse = lstTarefas();
-                // var Tarefa = lstResponse.FirstOrDefault(x => x.ID_TAREFA == ID_TAREFA);
-                // TarefaDTO Tarefa2 = lstResponse.Where(x=> x.ID_TAREFA == Tarefa.ID_TAREFA).FirstOrDefault();
-                // lstResponse.Remove(Tarefa2);
+                var tarefaId= _lstTarefas.RemoveAll(x => x.ID_TAREFA == ID_TAREFA);
+                if (tarefaId==0)
+                    throw new ArgumentException("ID não encontrado");
             }
             catch(Exception ex)
             {

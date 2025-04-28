@@ -26,49 +26,23 @@ namespace apiToDo.Controllers
         [HttpGet("lstTarefas")]
         public ActionResult<List<TarefaDTO>>lstTarefas()
         {
-            try
-            {
-                var tarefas = tarefasService.findTarefas();
-                return Ok(tarefas);
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(400, new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
-            }
+            var tarefas = tarefasService.findTarefas();
+            return Ok(tarefas);
         }
 
         [HttpPost("InserirTarefas")]
         public ActionResult InserirTarefas([FromBody] CriarTarefaDTO description)
         {
-            try
-            {
-                String idTarefa = tarefasService.InserirTarefa(description);
+            String idTarefa = tarefasService.InserirTarefa(description);
+            return StatusCode(201, new { Id = idTarefa, menssage = "inserida com sucesso" });
 
-
-                return StatusCode(201, new { Id = idTarefa, menssage = "inserida com sucesso" });
-
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(400, new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
-            }
         }
 
-        [HttpGet("DeletarTarefa")]
-        public ActionResult DeleteTask([FromQuery] int ID_TAREFA)
+        [HttpDelete("DeletarTarefa")]
+        public ActionResult DeletarTarefa([FromQuery] int ID_TAREFA)
         {
-            try
-            {
-
-                return StatusCode(200);
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(400, new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
-            }
+            tarefasService.DeletarTarefa(ID_TAREFA);
+            return StatusCode(200, new { Id = ID_TAREFA, menssage = "Deletada com sucesso" });
         }
 
     }
